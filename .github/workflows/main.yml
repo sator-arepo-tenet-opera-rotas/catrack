@@ -1,0 +1,42 @@
+name: Deploy Dockerised Lambda Function
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch. Adjust as necessary.
+
+jobs:
+  deploy-lambda-function:
+    runs-on: ubuntu-latest  # Runs the job on an Ubuntu runner.
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-2  # Set AWS region
+
+    - name: Build Docker Image
+      run: docker build -t cat_tracker .
+      #run: docker build --platform linux/arm64 -t xgbooster .
+      #run: docker build --platform linux/arm64 -t xgbooster .
+
+    - name: Login to AWS ECR
+      run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 926113637390.dkr.ecr.us-east-2.amazonaws.com
+
+    - name: Tag Docker Image
+      run: docker tag cat_tracker:latest 926113637390.dkr.ecr.us-east-2.amazonaws.com/cat_tracker:latest_ct
+
+    - name: Deploy Image to AWS ECR
+      run: docker push 926113637390.dkr.ecr.us-east-2.amazonaws.com/cat_tracker:latest_ct
+
+    - name: Update Lambda Function
+      run: |
+        aws lambda update-function-code --function-name prototype_cat_track --image-uri 926113637390.dkr.ecr.us-east-2.amazonaws.com/cat_tracker:latest_ct
+
+    #- name: Deploy Lambda Function
+    #  run: aws lambda update-function-configuration --function-name tokencount --memory-size 1024 --timeout 20
