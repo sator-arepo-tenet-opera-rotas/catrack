@@ -29,14 +29,11 @@ jobs:
       run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 926113637390.dkr.ecr.us-east-2.amazonaws.com
 
     - name: Tag Docker Image
-      run: docker tag cat_tracker:latest 926113637390.dkr.ecr.us-east-2.amazonaws.com/cat_tracker:latest
+      run: docker tag cat_tracker:latest 926113637390.dkr.ecr.us-east-2.amazonaws.com/containertainment_center:latest_ct
 
     - name: Deploy Image to AWS ECR
-      run: docker push 926113637390.dkr.ecr.us-east-2.amazonaws.com/cat_tracker:latest
+      run: docker push 926113637390.dkr.ecr.us-east-2.amazonaws.com/containertainment_center:latest_ct
 
     - name: Update Lambda Function
       run: |
-        aws lambda update-function-code --function-name prototype_cat_track --image-uri 926113637390.dkr.ecr.us-east-2.amazonaws.com/cat_tracker:latest
-
-    #- name: Deploy Lambda Function
-    #  run: aws lambda update-function-configuration --function-name tokencount --memory-size 1024 --timeout 20
+        aws lambda update-function-code --function-name prototype_cat_track --image-uri 926113637390.dkr.ecr.us-east-2.amazonaws.com/containertainment_center:latest_ct
