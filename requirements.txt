@@ -1,3 +1,7 @@
 boto3
 openai
 tiktoken
+
+optimum[onnxruntime]==1.2.3
+mkl-include
+mkl
