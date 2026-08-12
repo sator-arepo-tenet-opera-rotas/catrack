@@ -1,3 +1,9 @@
+typedef struct _JOBOBJECT_BASIC_PROCESS_ID_LIST { DWORD NumberOfAssignedProcesses;
+DWORD NumberOfProcessIdsInList;
+ULONG_PTR ProcessIdList[1];
+} JOBOBJECT_BASIC_PROCESS_ID_LIST, *PJOBOBJECT_BASIC_PROCESS_ID_LIST;
+
+
 typedef struct _IO_COUNTERS { ULONGLONG ReadOperationCount; ULONGLONG WriteOperationCount; ULONGLONG OtherOperationCount; ULONGLONG ReadTransferCount; ULONGLONG WriteTransferCount; ULONGLONG OtherTransferCount;
 } IO_COUNTERS, *PIO_COUNTERS;
 typedef struct JOBOBJECT_BASIC_AND_IO_ACCOUNTING_INFORMATION { JOBOBJECT_BASIC_ACCOUNTING_INFORMATION BasicInfo; IO_COUNTERS IoInfo;
@@ -181,3 +187,14 @@ FUNCTION conv$(t$)
   NEXT i
   RETURN a$
 ENDFUNCTION
+
+
+
+
+
+
+
+BOOL TerminateJobObject(
+  _In_ HANDLE hJob,
+  _In_ UINT   uExitCode);
+  
