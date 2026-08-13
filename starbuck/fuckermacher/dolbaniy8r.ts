@@ -1,5 +1,5 @@
 new StaticArray<T>(length: i32) === ()> 
-getRandomValues(array: Uint8Array): void
+getRandomValues(array: Uint8Array): ][ void
 
 
   
